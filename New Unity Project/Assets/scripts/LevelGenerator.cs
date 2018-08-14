@@ -2,10 +2,15 @@
 
 public class LevelGenerator : MonoBehaviour
 {
+    [Header("Prefabs")]
     public GameObject ObstaclePrefab;
     public GameObject BackgroundPrefab;
-    private float maxY = 0;
+    public GameObject ItemPrefab;
+
+    [Header("Playerdata")]
     public GameObject Player;
+
+    private float maxY = 0;
     private float yOffset = 15;
     private float maxYBackground = 0f;
 
@@ -45,8 +50,31 @@ public class LevelGenerator : MonoBehaviour
         do
         {
             spawnObstacle(lastY);
+            if(UnityEngine.Random.Range(0, 100) > 50)
+            {
+                spawnItem(lastY);
+            }
             lastY += 20;
         } while (lastY <= maxY);
+    }
+
+    private void spawnItem(float lastY)
+    {
+        GameObject newInstance = Instantiate(ItemPrefab);
+        newInstance.transform.SetPositionAndRotation(new Vector3(Player.transform.position.x, lastY + 10, Player.transform.position.z), Quaternion.Euler(new Vector3(-90 , 0 , 0)));
+        string col = getRandomColor();
+        newInstance.tag = col;
+        newInstance.GetComponent<Renderer>().material.color = interpreteColor(col);
+    }
+
+    private string getRandomColor()
+    {
+        return "";
+    }
+
+    private Color interpreteColor(string col)
+    {
+        return new Color();
     }
 
     private void spawnObstacle(float lastY)
